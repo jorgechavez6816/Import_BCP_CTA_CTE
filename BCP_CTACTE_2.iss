@@ -18,7 +18,7 @@ Sub Main
 	Call Summarization()	'BCP2022.IMD
 	Client.RefreshFileExplorer
 	Client.CloseAll
-	Client.DeleteDatabase "BCP2022"
+	'Client.DeleteDatabase "BCP2022"
 End Sub
 
 
@@ -30,8 +30,8 @@ Function AppendField
 	field.Name = "MED"
 	field.Description = ""
 	field.Type = WI_VIRT_CHAR
-	field.Equation = "@IF(@Isini(""TLC""; DESC )=0; @IF(@Isini(""BPI""; DESC )=0; @IF(@Isini(""INT""; DESC )=0; @IF(@Isini(""VEN""; DESC )=0; ""CAJ""; ""VEN""); ""INT""); ""BPI"");""TLC"")"
-	field.Length = 3
+	field.Equation = "@IF(@Isini(""TLC""; DESC )=0; @If(@Isini(""BPI""; DESC )=0; @If(@Isini(""INT ""; DESC )=0; @If(@Isini(""VEN ""; DESC )= 0; @If(@Isini(""POS ""; DESC )=0;""CAJ""; ""POS"");""VEN ""); ""INT""); ""BPI""); ""TLC"")"
+	field.Length = 4
 	task.AppendField field
 	task.PerformTask
 	Set task = Nothing
@@ -98,8 +98,8 @@ Function AppendField5
 	field.Name = "LUGAR"
 	field.Description = ""
 	field.Type = WI_VIRT_CHAR
-	field.Equation = "@Remove(@JUSTLETTERS(@SPLIT(DESC;MED;"""";1;0));""-"")"
-	field.Length = 18
+	field.Equation = "@if(med=""TLC"" .OR. med=""Int"" .OR. med=""BPI"" .OR. med=""POS""; """"; @if(med=""VEN""  .AND. @Isini(""VENTA""; DESC)<>0; @remove(@Remove(@JUSTLETTERS(@SPLIT(DESC;MED;"""";2;0));""-"");"":""); @remove(@Remove(@JUSTLETTERS(@SPLIT(DESC;MED;"""";1;0));""-"");"":"")))"
+	field.Length = 20
 	task.AppendField field
 	task.PerformTask
 	Set task = Nothing
